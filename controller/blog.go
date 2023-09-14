@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 	"v0/models"
 	"v0/service"
 
@@ -87,6 +88,56 @@ func DeletePost(w http.ResponseWriter, r *http.Request) {
 	ApiResponse(w, &Res{
 		Code:    200,
 		Message: "deleted successfully",
+		Data:    blog,
+	})
+}
+
+// Update post update the specific post by ID
+func UpdatePost(w http.ResponseWriter, r *http.Request) {
+	service := service.NewBlogService()
+
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+
+	if title == "" && content == "" {
+		ApiResponse(w, &Res{
+			Code:    903,
+			Message: "can't update blank values",
+			Data:    nil,
+		})
+		return
+	}
+
+	post := &models.Post{}
+	if title != "" {
+		post.Title = title
+	}
+
+	if content != "" {
+		post.Content = content
+	}
+	postID, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		ApiResponse(w, &Res{
+			Code:    901,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+	post.ID = uint(postID)
+	blog, err := service.UpdatePost(post)
+	if err != nil {
+		ApiResponse(w, &Res{
+			Code:    900,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+	ApiResponse(w, &Res{
+		Code:    200,
+		Message: "success",
 		Data:    blog,
 	})
 }

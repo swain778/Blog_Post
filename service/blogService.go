@@ -58,3 +58,12 @@ func (b *BlogService) DeletePost(blogID string) (bool, error) {
 	}
 	return true, nil
 }
+
+// Update post update the specific post by ID
+func (b *BlogService) UpdatePost(post *models.Post) (bool, error) {
+	err := b.db.Where("id=?", post.ID).Updates(&post).Error
+	if err != nil {
+		return false, errors.New("can't update blogs")
+	}
+	return true, nil
+}
