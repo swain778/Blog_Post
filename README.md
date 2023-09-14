@@ -6,3 +6,5 @@
 ### Run DB migration
 `go run . database`
 
+### Run API
+`go run .`
