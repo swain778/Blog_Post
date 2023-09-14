@@ -70,3 +70,23 @@ func GetPost(w http.ResponseWriter, r *http.Request) {
 		Data:    blog,
 	})
 }
+
+// DeletePost deletes a post with specific ID
+func DeletePost(w http.ResponseWriter, r *http.Request) {
+	service := service.NewBlogService()
+
+	blog, err := service.DeletePost(chi.URLParam(r, "id"))
+	if err != nil {
+		ApiResponse(w, &Res{
+			Code:    900,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+	ApiResponse(w, &Res{
+		Code:    200,
+		Message: "deleted successfully",
+		Data:    blog,
+	})
+}

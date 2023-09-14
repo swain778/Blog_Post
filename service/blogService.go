@@ -49,3 +49,12 @@ func (b *BlogService) GetPost(blogID string) (*models.Post, error) {
 	}
 	return post, nil
 }
+
+// DeletePost deletes a post with specific ID
+func (b *BlogService) DeletePost(blogID string) (bool, error) {
+	err := b.db.Where("id=?", blogID).Delete(&models.Post{}).Error
+	if err != nil {
+		return false, errors.New("can't delete blog")
+	}
+	return true, nil
+}
