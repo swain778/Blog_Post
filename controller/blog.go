@@ -29,3 +29,22 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		Data:    blog,
 	})
 }
+
+// GetsPosts give the posts list
+func GetsPosts(w http.ResponseWriter, r *http.Request) {
+	service := service.NewBlogService()
+	blog, err := service.GetsPosts()
+	if err != nil {
+		ApiResponse(w, &Res{
+			Code:    900,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+	ApiResponse(w, &Res{
+		Code:    200,
+		Message: "success",
+		Data:    blog,
+	})
+}

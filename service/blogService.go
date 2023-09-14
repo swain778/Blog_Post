@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"v0/database"
 	"v0/models"
 
@@ -25,4 +26,14 @@ func (b *BlogService) CreatePost(post *models.Post) (*models.Post, error) {
 		return nil, err
 	}
 	return post, nil
+}
+
+// GetsPosts give the posts list
+func (b *BlogService) GetsPosts() (*[]models.Post, error) {
+	blog := &[]models.Post{}
+	err := b.db.Model(&[]models.Post{}).Find(blog).Error
+	if err != nil {
+		return nil, errors.New("can't gets blog posts")
+	}
+	return blog, nil
 }
