@@ -11,5 +11,6 @@ func (ctn *Container) LoadRoutes() {
 
 	r.Route("/api", func(r chi.Router) {
 		r.Post("/post", controller.CreatePost)
+		r.Get("/posts", controller.GetsPosts)
 	})
 }
