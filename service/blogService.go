@@ -6,6 +6,7 @@ import (
 	"v0/models"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type BlogService struct {
@@ -36,4 +37,15 @@ func (b *BlogService) GetsPosts() (*[]models.Post, error) {
 		return nil, errors.New("can't gets blog posts")
 	}
 	return posts, nil
+}
+
+// GetBlog gets a blog with specific ID
+func (b *BlogService) GetPost(blogID string) (*models.Post, error) {
+	post := &models.Post{}
+	err := b.db.Model(&models.Post{}).Preload(clause.Associations).
+		First(post, "id=?", blogID).Error
+	if err != nil {
+		return nil, errors.New("can't get post")
+	}
+	return post, nil
 }

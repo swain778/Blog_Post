@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"v0/models"
 	"v0/service"
+
+	"github.com/go-chi/chi"
 )
 
 // CreateBlog creates a blog
@@ -34,6 +36,26 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 func GetsPosts(w http.ResponseWriter, r *http.Request) {
 	service := service.NewBlogService()
 	blog, err := service.GetsPosts()
+	if err != nil {
+		ApiResponse(w, &Res{
+			Code:    900,
+			Message: err.Error(),
+			Data:    nil,
+		})
+		return
+	}
+	ApiResponse(w, &Res{
+		Code:    200,
+		Message: "success",
+		Data:    blog,
+	})
+}
+
+// GetBlog gets a blog with specific ID
+func GetPost(w http.ResponseWriter, r *http.Request) {
+	service := service.NewBlogService()
+
+	blog, err := service.GetPost(chi.URLParam(r, "id"))
 	if err != nil {
 		ApiResponse(w, &Res{
 			Code:    900,
