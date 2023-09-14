@@ -13,7 +13,7 @@ func (ctn *Container) LoadRoutes() {
 		r.Post("/post", controller.CreatePost)
 		r.Get("/posts", controller.GetsPosts)
 		r.Get("/post/{id}", controller.GetPost)
-		r.Get("/post/{id}/delete", controller.DeletePost)
-		r.Post("/post/{id}/update", controller.UpdatePost)
+		r.Delete("/post/{id}", controller.DeletePost)
+		r.Put("/post/{id}", controller.UpdatePost)
 	})
 }
